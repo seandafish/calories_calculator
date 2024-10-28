@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calories Burned Estimator</title>
+</head>
+<body>
+    <h2>Enter Your Details to Estimate Calories Burned</h2>
+    <form action="/predict" method="POST">
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br><br>
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select><br><br>
+
+        <label for="weight">Weight (kg):</label>
+        <input type="number" step="0.1" id="weight" name="weight" required><br><br>
+
+        <label for="height">Height (m):</label>
+        <input type="number" step="0.01" id="height" name="height" required><br><br>
+
+        <label for="avg_bpm">Average BPM:</label>
+        <input type="number" step="0.1" id="avg_bpm" name="avg_bpm" required><br><br>
+
+        <label for="session_duration">Session Duration (hours):</label>
+        <input type="number" step="0.1" id="session_duration" name="session_duration" required><br><br>
+
+        <label for="bmi">BMI:</label>
+        <input type="number" step="0.1" id="bmi" name="bmi" required><br><br>
+
+        <label for="workout_type">Workout Type:</label>
+        <select id="workout_type" name="workout_type">
+            <option value="Cardio">Cardio</option>
+            <option value="Strength">Strength</option>
+            <option value="HIIT">HIIT</option>
+            <option value="Yoga">Yoga</option>
+        </select><br><br>
+
+        <button type="submit">Estimate Calories Burned</button>
+    </form>
+
+    <h3 id="result"></h3>
+</body>
+</html>
