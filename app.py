@@ -3,7 +3,8 @@ import pandas as pd
 
 app = Flask(__name__)
 
-# Assuming 'pipeline' is your trained model pipeline
+pipeline = joblib.load('calories_burned_model.pkl')
+
 def predict_calories(age, gender, weight, height, avg_bpm, session_duration, bmi, workout_type):
     input_data = pd.DataFrame({
         'Age': [age],
