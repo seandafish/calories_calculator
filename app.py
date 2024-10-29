@@ -4,6 +4,7 @@ import joblib
 
 app = Flask(__name__)
 
+# Load model
 pipeline = joblib.load('calories_burned_model.pkl')
 
 def predict_calories(age, gender, weight, height, avg_bpm, session_duration, bmi, workout_type):
@@ -25,20 +26,25 @@ def index():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    age = int(request.form['age'])
-    gender = request.form['gender']
-    weight = float(request.form['weight'])
-    height = float(request.form['height'])
-    avg_bpm = float(request.form['avg_bpm'])
-    session_duration = float(request.form['session_duration'])
-    bmi = float(request.form['bmi'])
-    workout_type = request.form['workout_type']
+    try:
+        age = int(request.form['age'])
+        gender = request.form['gender']
+        weight = float(request.form['weight'])
+        height = float(request.form['height'])
+        avg_bpm = float(request.form['avg_bpm'])
+        session_duration = float(request.form['session_duration'])
+        bmi = float(request.form['bmi'])
+        workout_type = request.form['workout_type']
+        
+        # Make the prediction
+        predicted_calories = predict_calories(age, gender, weight, height, avg_bpm, session_duration, bmi, workout_type)
+        
+        # Render the result
+        return render_template('index.html', result=f"Estimated Calories Burned: {predicted_calories:.2f}")
     
-    # Make the prediction
-    predicted_calories = predict_calories(age, gender, weight, height, avg_bpm, session_duration, bmi, workout_type)
-    
-    # Return the result
-    return render_template('index.html', result=f"Estimated Calories Burned: {predicted_calories:.2f}")
+    except Exception as e:
+        print("Error occurred:", e)
+        return "An error occurred while making the prediction", 400
 
 if __name__ == '__main__':
     app.run(debug=True)
