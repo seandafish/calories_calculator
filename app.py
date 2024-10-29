@@ -5,20 +5,29 @@ import joblib
 app = Flask(__name__)
 
 # Load model
-pipeline = joblib.load('calories_burned_model.pkl')
+try:
+    pipeline = joblib.load('calories_burned_model.pkl')
+    print("Model loaded successfully.")
+except Exception as e:
+    print("Error loading model:", e)
 
 def predict_calories(age, gender, weight, height, avg_bpm, session_duration, bmi, workout_type):
-    input_data = pd.DataFrame({
-        'Age': [age],
-        'Gender': [gender],
-        'Weight (kg)': [weight],
-        'Height (m)': [height],
-        'Avg_BPM': [avg_bpm],
-        'Session_Duration (hours)': [session_duration],
-        'BMI': [bmi],
-        'Workout_Type': [workout_type]
-    })
-    return pipeline.predict(input_data)[0]
+    try:
+        input_data = pd.DataFrame({
+            'Age': [age],
+            'Gender': [gender],
+            'Weight (kg)': [weight],
+            'Height (m)': [height],
+            'Avg_BPM': [avg_bpm],
+            'Session_Duration (hours)': [session_duration],
+            'BMI': [bmi],
+            'Workout_Type': [workout_type]
+        })
+        prediction = pipeline.predict(input_data)[0]
+        return prediction
+    except Exception as e:
+        print("Error during prediction:", e)
+        raise
 
 @app.route('/')
 def index():
@@ -43,8 +52,8 @@ def predict():
         return render_template('index.html', result=f"Estimated Calories Burned: {predicted_calories:.2f}")
     
     except Exception as e:
-        print("Error occurred:", e)
-        return "An error occurred while making the prediction", 400
+        print("Error in /predict route:", e)
+        return render_template('index.html', result="An error occurred. Please try again."), 400
 
 if __name__ == '__main__':
     app.run(debug=True)
