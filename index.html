@@ -4,27 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calories Burned Estimator</title>
-    <script>
-        function autoSubmit() {
-            const form = document.getElementById('calorieForm');
-            const inputs = form.querySelectorAll('input, select');
-            let allFilled = true;
-
-            inputs.forEach(input => {
-                if (!input.value) {
-                    allFilled = false;
-                }
-            });
-
-            if (allFilled) {
-                form.submit();
-            }
-        }
-    </script>
 </head>
 <body>
     <h2>Enter Your Details to Estimate Calories Burned</h2>
-    <form action="/predict" method="POST" id="calorieForm" oninput="autoSubmit()">
+    <form action="/predict" method="POST">
         <label for="age">Age:</label>
         <input type="number" id="age" name="age" required><br><br>
 
@@ -56,6 +39,8 @@
             <option value="HIIT">HIIT</option>
             <option value="Yoga">Yoga</option>
         </select><br><br>
+
+        <button type="submit">Estimate Calories Burned</button>
     </form>
 
     {% if result %}
